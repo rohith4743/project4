@@ -1,0 +1,168 @@
+
+<HomeScreen>:
+    styleimg: styleimg
+    objimg : objimg
+    AnchorLayout:        
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: 0.8
+
+            BoxLayout:
+                size_hint_y: None
+                height:350
+                padding: (10,10)
+                spacing: (20,20)
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        size_hint_y: None
+                        height:60
+                        Label:
+                            text:'Select the Style Image:'
+                        Button:
+                            text: 'Select'
+                            on_release: root.show_load()
+                    Image:
+                        id: styleimg
+                        canvas.before:
+                            Color:  
+                                rgba: (0, 1, 0, 0.5) 
+                            Rectangle: 
+                                size: self.size 
+                                pos: self.pos
+                        source: 'images\default.png'
+                        allow_stretch: True
+                
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        size_hint_y: None
+                        height:60
+                        Label:
+                            text:'Select the Object Image:'
+                        Button:
+                            text: 'Select'
+                            on_release: root.show_loadobj()
+
+                    Image:
+                        id: objimg
+                        canvas.before:
+                            Color:  
+                                rgba: (0, 1, 0, 0.5) 
+                            Rectangle: 
+                                size: self.size 
+                                pos: self.pos
+                        source: 'images\default.png'
+                        allow_stretch: True
+            Button:
+                size_hint_y: None
+                height: 30
+                text: 'Submit'
+                on_release:root.manager.current='placingscreen'
+
+            Widget:
+
+<LoadImage>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<LoadObj>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<Screen2>:
+    AnchorLayout:
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.8
+            BoxLayout:
+                Label:
+                    text: "please position your Object Image on Style Image:"
+                    size_hint_y: None
+                    height: 40
+            
+            BoxLayout:
+                size_hint_y: None
+                height:480
+                canvas:
+                    Color:
+                        rgba: 1,1,0,0
+                    Rectangle:
+                        size:self.size
+                        pos:self.pos
+
+                RelativeLayout:                    
+                    Image:
+                        source:app.styleimage
+                        size:self.texture_size[0]*480//self.texture_size[1],480
+                        size_hint:None,None
+                        pos:self.pos
+                        id:sty
+                    Scatter:
+                        id: obj
+                        do_rotation: False
+                        Image:
+                            id: obi
+                            source:app.objectimg
+                            size_hint:None,None
+                            size:self.texture_size[0]*240//self.texture_size[1],240
+                    
+            BoxLayout:
+                Button:
+                    text: 'Position: '+str(sty.size)+' Size: '+str(obi.size) + 'Scale: '+str(obj.scale)
+                    size_hint_y: None
+                    height: 40
+                    on_press: root.generate_work_image([obj.pos,obi.size,obj.scale,sty.size])
+                    # on_release: root.manager.current="output"
+
+            Widget:
+
+<OutputScreen>:
+    newimg:newimg
+    AnchorLayout:
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x:0.8
+            BoxLayout:
+                Label:
+                    text: "The Output Image is"
+                    size_hint_y: None
+                    height: 40
+
+            Image:
+                id:newimg
+                source: app.newimg
+                size_hint: None, None
+                size:self.texture_size
+                pos:self.pos
+            Widget:
