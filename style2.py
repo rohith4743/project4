@@ -186,7 +186,7 @@ if __name__ == '__main__':
                 outimg=outimg.clip(0,1)
                 plt.imshow(outimg,label="Epoch "+str(n_iter))
                 plt.show()
-                plt.imsave('D:/project/outputs2/'+str(n_iter)+'.png',outimg,format='png')
+                plt.imsave('D:/project/outputs3/'+str(n_iter)+'.png',outimg,format='png')
         n_iter += 1
         return loss
 
